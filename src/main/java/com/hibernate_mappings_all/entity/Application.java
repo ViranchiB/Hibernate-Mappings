@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Entity
 @Getter
 @Setter
@@ -17,22 +15,17 @@ import java.util.Set;
 @NoArgsConstructor
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "applicantId"
+        property = "applicationId"
 )
-public class Applicant {
+public class Application {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long applicantId;
+    private Long applicationId;
+    private String position;
+    private String status;
 
-    private String name;
-    private String email;
-    private String phone;
-
-    // Inverse side holds the cascade type (Parent side)
-    @OneToOne(mappedBy = "applicant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Resume resume;
-
-    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL)
-    private Set<Application> application;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "applicant_id")
+    private Applicant applicant;
 }
